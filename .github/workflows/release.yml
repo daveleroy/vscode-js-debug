@@ -1,5 +1,5 @@
 on:
-  push:
+  create:
   workflow_dispatch:
   
 name: vscode-js-debug
