@@ -1,6 +1,6 @@
 on:
-  create:
-  
+  push:
+    
 name: vscode-js-debug
 
 jobs:
