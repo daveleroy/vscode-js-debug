@@ -1,19 +1,37 @@
 on:
   push:
-    
+  workflow_dispatch:
+  
 name: vscode-js-debug
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      -
+        uses: oprypin/find-latest-tag@v1.1.0
+        with:
+          repository: daveleroy/vscode-js-debug
+          prefix: v1
+        id: tag
+      
+      -
+        uses: oprypin/find-latest-tag@v1.1.0
+        with:
+          repository: daveleroy/vscode-js-debug
+          prefix: v1
+          release_only: true
+        id: release
+
         
       -
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref_rename }}
+          ref: ${{ steps.tag.outputs.tag }}
         
       -
+        if:  ${{ steps.tag.outputs.tag != steps.release.outputs.tag}}
+
         run: |
           npm install --legacy-peer-deps
           node_modules/.bin/gulp vsDebugServerBundle 
@@ -21,17 +39,21 @@ jobs:
           zip -r extension.vsix extension
           
       -
+        if:  ${{ steps.tag.outputs.tag != steps.release.outputs.tag}}
+
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_rename }}
-          release_name: ${{ github.ref_rename }}
+          tag_name: ${{ steps.tag.outputs.tag }}
+          release_name: ${{ steps.tag.outputs.tag }}
           draft: false
           prerelease: false
           
       - 
+        if:  ${{ steps.tag.outputs.tag != steps.release.outputs.tag}}
+
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
