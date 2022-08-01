@@ -2,34 +2,32 @@ on:
   push:
   workflow_dispatch:
   
-name: Build & Create Release & Upload Release Assets
+name: vscode-js-debug
 
 jobs:
   build:
-    name: Build & Create Release & Upload Release Assets
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Finding Latest Tag
+      -
         uses: oprypin/find-latest-tag@v1.1.0
         with:
           repository: daveleroy/vscode-js-debug
           prefix: v1
         id: latest_tag
         
-      - name: Checking Out At ${{ steps.latest_tag.outputs.tag }}
+      -
         uses: actions/checkout@v2
         with:
           ref: ${{ steps.latest_tag.outputs.tag }}
         
-      - name: Build project # This would actually build your project, using zip for an example artifact
+      -
         run: |
-          npm install
+          npm install --legacy-peer-deps
           node_modules/.bin/gulp vsDebugServerBundle 
           mv dist extension
           zip -r extension.vsix extension
           
-      - name: Create Release ${{ steps.latest_tag.outputs.tag }}
+      -
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -40,7 +38,7 @@ jobs:
           draft: false
           prerelease: false
           
-      - name: Upload Release Asset ${{ steps.latest_tag.outputs.tag }}
+      - 
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
