@@ -22,7 +22,7 @@ jobs:
         with:
           repository: daveleroy/vscode-js-debug
           prefix: v1
-          release_only: true
+          releases-only: true
         id: release
 
         
