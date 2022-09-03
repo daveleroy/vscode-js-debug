@@ -50,8 +50,8 @@ jobs:
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
           release_name: ${{ steps.tag.outputs.tag }}
-          draft: true
-          prerelease: false
+          draft: false
+          prerelease: true
           
       - 
         if:  ${{ steps.tag.outputs.tag != steps.release.outputs.tag}}
