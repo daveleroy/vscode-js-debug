@@ -15,3 +15,4 @@ jobs:
           git pull --tags
           git tag
           git fetch --tags https://github.com/microsoft/vscode-js-debug.git
+          git push
