@@ -15,5 +15,5 @@ jobs:
           git pull --tags
           git tag
           git fetch --tags https://github.com/microsoft/vscode-js-debug.git
-          git log origin/master..master
+          git log origin/main..main
           git push --tags
